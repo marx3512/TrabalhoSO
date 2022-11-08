@@ -1,3 +1,8 @@
+import threading
+import random
+
+semaforo = threading.Semaphore(2)
+
 class MyCircularQueue():
 
     def __init__(self, k):
@@ -5,7 +10,6 @@ class MyCircularQueue():
         self.queue = [None] * k
         self.head = self.tail = -1
 
-    # Insert an element into the circular queue
     def enqueue(self, data):
         if ((self.tail + 1) % self.k == self.head):
             print("The circular queue is full\n")
@@ -18,7 +22,6 @@ class MyCircularQueue():
             self.tail = (self.tail + 1) % self.k
             self.queue[self.tail] = data
 
-    # Delete an element from the circular queue
     def dequeue(self):
         if (self.head == -1):
             print("The circular queue is empty\n")
@@ -48,28 +51,23 @@ class MyCircularQueue():
                 print(self.queue[i], end=" ")
             print()
 
+def interactionQueue():
+    for i in range(3):
+        elementRemove = obj.dequeue()
+        elementInsert = random.randint(1,100)
+        obj.enqueue(elementInsert)
+        print("Removido: " + str(elementRemove) + " Inserido: " + str(elementInsert))
+        obj.printCQueue()
 
-# Your MyCircularQueue object will be instantiated and called as such:
-obj = MyCircularQueue(5)
-obj.enqueue(1)
-obj.enqueue(2)
-obj.enqueue(3)
-obj.enqueue(4)
-obj.enqueue(5)
-print("Initial queue")
+obj = MyCircularQueue(10)
+
+j = 0
+
+while j < 10:
+    obj.enqueue(random.randint(1,100))
+    j += 1
+
+print("Fila inicial")
 obj.printCQueue()
 
-obj.dequeue()
-print("After removing an element from the queue")
-obj.printCQueue()
-
-obj.enqueue(6)
-obj.printCQueue()
-
-obj.dequeue()
-obj.enqueue(7)
-obj.printCQueue()
-
-obj.dequeue()
-obj.enqueue(8)
-obj.printCQueue()
+interactionQueue()
