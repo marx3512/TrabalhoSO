@@ -52,22 +52,28 @@ class MyCircularQueue():
             print()
 
 def interactionQueue():
+    semaforo.acquire()
     for i in range(3):
         elementRemove = obj.dequeue()
         elementInsert = random.randint(1,100)
         obj.enqueue(elementInsert)
-        print("Removido: " + str(elementRemove) + " Inserido: " + str(elementInsert))
+        print(threading.current_thread().getName() + " -> Removido: " + str(elementRemove) + " Inserido: " + str(elementInsert))
         obj.printCQueue()
+    semaforo.release()
 
 obj = MyCircularQueue(10)
 
 j = 0
-
+#Adicionando elementos na fila
 while j < 10:
     obj.enqueue(random.randint(1,100))
     j += 1
 
-print("Fila inicial")
-obj.printCQueue()
+t1 = threading.Thread(target=interactionQueue, args=[])
+t2 = threading.Thread(target=interactionQueue, args=[])
 
-interactionQueue()
+t1.start()
+t2.start()
+
+t1.join()
+t2.join()
