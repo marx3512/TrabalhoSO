@@ -1,5 +1,4 @@
-import threading
-import random
+import threading, random, time
 
 semaforo = threading.Semaphore(2)
 
@@ -51,14 +50,17 @@ class MyCircularQueue():
                 print(self.queue[i], end=" ")
             print()
 
-def interactionQueue():
+def interactionQueue(name_thread):
+    i = 0
     semaforo.acquire()
-    for i in range(3):
+    while i < 5:
         elementRemove = obj.dequeue()
         elementInsert = random.randint(1,100)
         obj.enqueue(elementInsert)
-        print(threading.current_thread().getName() + " -> Removido: " + str(elementRemove) + " Inserido: " + str(elementInsert))
+        print(name_thread + " -> Removido: " + str(elementRemove) + " Inserido: " + str(elementInsert))
         obj.printCQueue()
+        time.sleep(0.5)
+        i += 1   
     semaforo.release()
 
 obj = MyCircularQueue(10)
@@ -68,9 +70,11 @@ j = 0
 while j < 10:
     obj.enqueue(random.randint(1,100))
     j += 1
-
-t1 = threading.Thread(target=interactionQueue, args=[])
-t2 = threading.Thread(target=interactionQueue, args=[])
+    
+obj.printCQueue()
+        
+t1 = threading.Thread(target=interactionQueue, args = ["Thread 1"])
+t2 = threading.Thread(target=interactionQueue, args = ["Thread 2"])
 
 t1.start()
 t2.start()
