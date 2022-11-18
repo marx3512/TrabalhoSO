@@ -52,16 +52,29 @@ class MyCircularQueue():
 
 def interactionQueue(name_thread):
     i = 0
+    quantidade = 0
+    timeStart = time.time()
     semaforo.acquire()
-    while i < 5:
+    while True:
         elementRemove = obj.dequeue()
         elementInsert = random.randint(1,100)
         obj.enqueue(elementInsert)
+        quantidade += 1
         print(name_thread + " -> Removido: " + str(elementRemove) + " Inserido: " + str(elementInsert))
         obj.printCQueue()
-        time.sleep(0.5)
-        i += 1   
+        time.sleep(1)
+        timeEnd = time.time()
+        if timeEnd-timeStart >= 50:
+            # print("1 segundo")
+            break
+        #i += 1
     semaforo.release()
+    if name_thread == "Thread 1":
+        mediaInsercoes = (quantidade*2)/(timeEnd-timeStart)
+        print("A quantidade de insercoes por segundo foram ", round(mediaInsercoes))
+           
+    
+    
 
 obj = MyCircularQueue(10)
 
