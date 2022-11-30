@@ -4,9 +4,9 @@ from CircularQueue import CircularQueue
 def interactionQueue(name_thread, semaphore, queue, results):
     quantity = 0
     timeStart = time.time()
-    semaphore.acquire()
     
     while True:
+        semaphore.acquire()
         elementRemove = queue.dequeue()
         elementInsert = random.randint(1,100)
         queue.enqueue(elementInsert)
@@ -15,17 +15,16 @@ def interactionQueue(name_thread, semaphore, queue, results):
         print(f'{name_thread} -> ( Removido: {elementRemove} -- Inserido: {elementInsert} -- Fila: {queue.final_queue} )')
         print()
         
-        #time.sleep(0.01)
-        
         timeEnd = time.time()
         if timeEnd-timeStart >= 1:
+            semaphore.release()
             break
         semaphore.release()
 
     results[name_thread] = {'Quantidade': quantity}
            
 def main():
-    semaphore = threading.Semaphore(1)
+    semaphore = threading.Semaphore(2)
     queue = CircularQueue(10)
     results = {}
     
