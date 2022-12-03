@@ -1,7 +1,7 @@
 import threading, random, time
 from CircularQueue import CircularQueue
 
-def interactionQueue(name_thread, semaphore, queue, results):
+def interaction_queue(name_thread, semaphore, queue, results):
     quantity = 0
     timeStart = time.time()
     
@@ -23,7 +23,7 @@ def interactionQueue(name_thread, semaphore, queue, results):
 
     results[name_thread] = {'Quantidade': quantity}
            
-def main():
+def run_algorithm():
     semaphore = threading.Semaphore(2)
     queue = CircularQueue(10)
     results = {}
@@ -35,8 +35,8 @@ def main():
     print(f'Fila Inicial: {queue.final_queue}')
     print()
             
-    t1 = threading.Thread(target=interactionQueue, args = ["Thread 1", semaphore, queue, results])
-    t2 = threading.Thread(target=interactionQueue, args = ["Thread 2", semaphore, queue, results])
+    t1 = threading.Thread(target=interaction_queue, args = ["Thread 1", semaphore, queue, results])
+    t2 = threading.Thread(target=interaction_queue, args = ["Thread 2", semaphore, queue, results])
 
     t1.start()
     t2.start()
@@ -47,6 +47,6 @@ def main():
     total_per_second = 0
     for key in results.keys():
         total_per_second += results[key]['Quantidade']
-    print(f'Quantidade de inserções de inteiros na fila por segundo: {total_per_second}\n')
+    print(f'Quantidade de inserções de inteiros na fila por segundo no algoritmo concorrente: {total_per_second}\n')
 
-main()
+run_algorithm()
